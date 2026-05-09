@@ -66,8 +66,8 @@ function telegramMessageCacheKey(params: {
   return `${params.accountId}:${params.chatId}:${params.messageId}`;
 }
 
-export function resolveTelegramMessageCachePath(storePath: string): string {
-  const trimmed = storePath.trim();
+export function resolveTelegramMessageCacheScopeKey(scopeSeed: string): string {
+  const trimmed = scopeSeed.trim();
   return trimmed ? `telegram-message-cache:${trimmed}` : "telegram-message-cache:default";
 }
 
@@ -258,10 +258,10 @@ function resolveMessageCacheBucket(params: {
 
 export function createTelegramMessageCache(params?: {
   maxMessages?: number;
-  persistedPath?: string;
+  persistedScopeKey?: string;
 }): TelegramMessageCache {
   const maxMessages = params?.maxMessages ?? DEFAULT_MAX_MESSAGES;
-  const scopeKey = params?.persistedPath;
+  const scopeKey = params?.persistedScopeKey;
   const { messages } = resolveMessageCacheBucket({
     scopeKey,
     maxMessages,
