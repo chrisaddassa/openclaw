@@ -239,7 +239,7 @@ export async function appendSessionTranscriptMessage(params: {
   cwd?: string;
   useRawWhenLinear?: boolean;
   config?: OpenClawConfig;
-}): Promise<{ messageId: string }> {
+}): Promise<{ messageId: string; message: AgentMessage }> {
   return await withTranscriptAppendQueue(params.transcriptPath, () =>
     appendSessionTranscriptMessageLocked(params),
   );
@@ -253,7 +253,7 @@ async function appendSessionTranscriptMessageLocked(params: {
   cwd?: string;
   useRawWhenLinear?: boolean;
   config?: OpenClawConfig;
-}): Promise<{ messageId: string }> {
+}): Promise<{ messageId: string; message: AgentMessage }> {
   const lock = await acquireSessionWriteLock({
     sessionFile: params.transcriptPath,
     timeoutMs: resolveSessionWriteLockAcquireTimeoutMs(params.config),
@@ -296,7 +296,7 @@ async function appendSessionTranscriptMessageLocked(params: {
       message: finalMessage,
     };
     await fs.appendFile(params.transcriptPath, `${JSON.stringify(entry)}\n`, "utf-8");
-    return { messageId };
+    return { messageId, message: finalMessage };
   } finally {
     await lock.release();
   }
