@@ -124,6 +124,16 @@ openclaw onboard --non-interactive \
       --gateway-bind loopback
     ```
   </Accordion>
+  <Accordion title="Groq example">
+    ```bash
+    openclaw onboard --non-interactive \
+      --mode local \
+      --auth-choice groq-api-key \
+      --groq-api-key "$GROQ_API_KEY" \
+      --gateway-port 18789 \
+      --gateway-bind loopback
+    ```
+  </Accordion>
   <Accordion title="Synthetic example">
     ```bash
     openclaw onboard --non-interactive \
