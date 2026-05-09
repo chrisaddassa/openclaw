@@ -1,7 +1,24 @@
+import fs from "node:fs";
 import { capturePluginRegistration } from "openclaw/plugin-sdk/plugin-test-runtime";
 import { describe, expect, it } from "vitest";
 import { contributeGroqResolvedModelCompat, resolveGroqReasoningCompatPatch } from "./api.js";
 import plugin from "./index.js";
+
+type GroqManifest = {
+  providerAuthChoices?: Array<{
+    provider?: string;
+    method?: string;
+    choiceId?: string;
+    optionKey?: string;
+    cliFlag?: string;
+  }>;
+};
+
+function readManifest(): GroqManifest {
+  return JSON.parse(
+    fs.readFileSync(new URL("./openclaw.plugin.json", import.meta.url), "utf8"),
+  ) as GroqManifest;
+}
 
 describe("groq provider compat", () => {
   it("maps Groq Qwen 3 reasoning to provider-native none/default values", () => {
@@ -46,11 +63,32 @@ describe("groq provider compat", () => {
       label: "Groq",
       envVars: ["GROQ_API_KEY"],
     });
+    expect(captured.providers[0]?.auth.map((method) => method.id)).toEqual(["api-key"]);
+    expect(captured.providers[0]?.auth[0]?.wizard).toMatchObject({
+      choiceId: "groq-api-key",
+      choiceLabel: "Groq API key",
+      groupId: "groq",
+      groupLabel: "Groq",
+    });
     expect(captured.mediaUnderstandingProviders).toHaveLength(1);
     const [mediaProvider] = captured.mediaUnderstandingProviders;
     if (!mediaProvider) {
       throw new Error("Expected Groq media understanding provider");
     }
     expect(mediaProvider.id).toBe("groq");
+  });
+
+  it("declares Groq API-key onboarding flags in the manifest", () => {
+    expect(readManifest().providerAuthChoices).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          provider: "groq",
+          method: "api-key",
+          choiceId: "groq-api-key",
+          optionKey: "groqApiKey",
+          cliFlag: "--groq-api-key",
+        }),
+      ]),
+    );
   });
 });

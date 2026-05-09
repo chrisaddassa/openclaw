@@ -14,7 +14,7 @@ For the short guide, see [Onboarding (CLI)](/start/wizard).
 
 Local mode (default) walks you through:
 
-- Model and auth setup (OpenAI Code subscription OAuth, Anthropic Claude CLI or API key, plus MiniMax, GLM, Ollama, Moonshot, StepFun, and AI Gateway options)
+- Model and auth setup (OpenAI Code subscription OAuth, Anthropic Claude CLI or API key, plus Groq, MiniMax, GLM, Ollama, Moonshot, StepFun, and AI Gateway options)
 - Workspace location and bootstrap files
 - Gateway settings (port, bind, auth, tailscale)
 - Channels and providers (Telegram, WhatsApp, Discord, Google Chat, Mattermost, Signal, iMessage, and other bundled channel plugins)
@@ -155,6 +155,9 @@ What you set:
   </Accordion>
   <Accordion title="xAI (Grok) API key">
     Prompts for `XAI_API_KEY` and configures xAI as a model provider.
+  </Accordion>
+  <Accordion title="Groq API key">
+    Prompts for `GROQ_API_KEY` and configures Groq as a model provider. Model refs use `groq/<model-name>`, for example `groq/llama-3.3-70b-versatile`.
   </Accordion>
   <Accordion title="OpenCode">
     Prompts for `OPENCODE_API_KEY` (or `OPENCODE_ZEN_API_KEY`) and lets you choose the Zen or Go catalog.

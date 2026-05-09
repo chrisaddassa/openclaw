@@ -178,6 +178,14 @@ openclaw onboard --non-interactive \
   --mistral-api-key "$MISTRAL_API_KEY"
 ```
 
+Non-interactive Groq example:
+
+```bash
+openclaw onboard --non-interactive \
+  --auth-choice groq-api-key \
+  --groq-api-key "$GROQ_API_KEY"
+```
+
 ## Flow notes
 
 <AccordionGroup>
